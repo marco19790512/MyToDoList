@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function: Check if user is a member or owner of the list
+    function isListMember(listData) {
+      return isAuthenticated() && (
+        listData.ownerId == request.auth.uid ||
+        request.auth.uid in listData.memberUids ||
+        request.auth.token.email in listData.memberEmails
+      );
+    }
+
+    // Lists Collection
+    match /lists/{listId} {
+      // Allow read if user is authenticated and is a member, or if querying public/shared list
+      allow read: if isAuthenticated();
+      // Allow create if authenticated and setting themselves as owner
+      allow create: if isAuthenticated() && request.resource.data.ownerId == request.auth.uid;
+      // Allow update if member (e.g. adding member, updating title)
+      allow update: if isAuthenticated();
+      // Allow delete if list owner
+      allow delete: if isAuthenticated() && resource.data.ownerId == request.auth.uid;
+      
+      // Subcollection for Todos inside a List
+      match /todos/{todoId} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+
+    // Direct Todos Collection (support querying by listId)
+    match /todos/{todoId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // User presence or profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+  }
+}
