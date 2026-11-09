@@ -29,12 +29,12 @@ const STORAGE_KEY = 'my_todo_firebase_config';
 
 // 預設為使用者指定的 Firebase 專案 ID: my-to-do-list-7d60c
 const DEFAULT_CONFIG = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyBWxu-uZAVKOQ_ziUMkz_sz_Eig_WmZSeo',
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'my-to-do-list-7d60c.firebaseapp.com',
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'my-to-do-list-7d60c',
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'my-to-do-list-7d60c.firebasestorage.app',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || ''
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '898769600470',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:898769600470:web:de4a594addf21ed3f12e77'
 };
 
 export const getStoredConfig = () => {
